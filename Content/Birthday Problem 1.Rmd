@@ -26,6 +26,11 @@ library(magrittr)
 library(ggplot2)
 ```
 
+<style>
+body {
+text-align: justify}
+</style>
+
 ***
 ### What is the birthday problem?
 ***
@@ -37,6 +42,8 @@ library(ggplot2)
 ***
 ### Solving the Birthday Problem
 ***
+
+To answer what the probability of at least two birthdays falling together is, I simulate 5,000 trials from 1 to 100 people and overlay the empirically obtained results with the closed-form mathematical solution in a plot. The results show that 5,000 simulations for any number of people is sufficient to obtain a fairly stable result, which nicely matches the closed form solution.
 
 ```{r, cache=TRUE}
 # params
@@ -82,7 +89,7 @@ ggplot(resmat, aes(x = V1)) +
   labs(title = "A Birthday Problem",
        subtitle = "How many people would you put into a room until you are 99% \ncertain that at least two people share the same birthday? ",
        caption = paste(simulations, "simulations for every number 'n' people")) +
-  guides(linetype = "none") + #removes linetype legend
+  guides(linetype = "none") +
   labs(x = "People in a Room",
        y = "Prob. of at least 2 birthdays falling together",
        colour = NULL) +
@@ -112,7 +119,6 @@ ggplot(resmat, aes(x = V1)) +
         plot.subtitle=element_text(size=12, face="italic", color="grey50"),
         plot.caption=element_text(size=6, face="italic", color="grey50"))
 ```
-
 
 
 &nbsp;

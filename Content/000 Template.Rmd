@@ -22,6 +22,11 @@ editor_options:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+<style>
+body {
+text-align: justify}
+</style>
+
 ***
 ### Template
 ***

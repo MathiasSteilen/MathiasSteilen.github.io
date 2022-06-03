@@ -14,7 +14,7 @@ editor_options:
 
 [Return to Homepage](https://mathiassteilen.github.io/)
 
-[Return to Statistical Modelling Section](https://mathiassteilen.github.io/modelling.html)
+[Return to Data Visualisation Section](https://mathiassteilen.github.io/dataviz.html)
 
 ![](../Graphics/wind turbine wide.jpg)
 
@@ -32,7 +32,7 @@ The [data](https://github.com/rfordatascience/tidytuesday/tree/master/data/2018/
 
 
 ***
-### Template
+### Data Cleaning
 ***
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
@@ -40,9 +40,7 @@ The [data](https://github.com/rfordatascience/tidytuesday/tree/master/data/2018/
 wind <- read.csv("C:/Users/mathi/OneDrive/Universitaet/6th semester/Data Visualisation/4 - Portfolio/Data/us_wind.csv") %>% as_tibble()
 ```
 
-Other than the replacement of missing values and the categorisation of all projects into decades, there was not much to be done data cleaning wise.
-
-Data Preparation (click to unfold code):
+Other than the replacement of missing values and the categorisation of all projects into decades, there was not much to be done data cleaning wise (code section can be opened to the right).
 
 ```{r}
 wind <- wind %>% 
@@ -55,11 +53,13 @@ wind <- wind %>%
   drop_na() %>% 
   mutate(p_year = cut(p_year, seq(1980, 2020, 10), dig.lab = 5)) %>% 
   filter(dplyr::between(xlong, -125, -65),
-         dplyr::between(ylat, 20, 50)) %>% 
+         dplyr::between(ylat, 20, 50)) %>% # Removing Alaska and Islands
   distinct()
 ```
 
-Plot (click to unfold code):
+***
+### Final Plot
+***
 
 ```{r, fig.width = 8, fig.height=4.95, dpi=300, dev="png"}
 us <- map_data('state')

@@ -1,0 +1,714 @@
+---
+title: "Application Of Machine Learning Methods To Mutual Fund Selection"
+output: 
+  html_document:
+    theme: readable
+    toc: FALSE
+    toc_depth: 3
+    toc_float: TRUE
+    df_print: paged
+    code_folding: hide
+editor_options: 
+  chunk_output_type: console
+---
+
+[Return to Homepage](https://mathiassteilen.github.io/)
+
+[Return to Statistical Modelling Section](https://mathiassteilen.github.io/modelling.html)
+
+![](../Graphics/bull.jpg)
+
+<style>
+body {
+text-align: justify}
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+***
+### Purpose Of This Document
+***
+
+This document serves the purpose of an executive summary of my bachelor's thesis on machine learning in fund selection. The main findings and implications with regard to practice are presented. Granular details on the methods and results, both quantitative and qualitative, are omitted in view of the length of this document. You are welcome, however, to reach out if you would like to see more detail.
+
+***
+### Research Question
+***
+
+My bachelor's thesis revolves around the research question of whether machine learning methods are capable of assisting asset and wealth managers in selecting funds which generate strictly positive alpha over an extended period of time based on their fund characteristics. Furthermore, it ties together the technical analysis of using machine learning methods in predicting outperforming mutual funds with implications of their implementation in practice gathered from interviews with investment professionals from various financial institutions.
+
+***
+### The Data
+***
+
+The dataset employed as a basis for the algorithms is provided by the Center for Research in Security Prices (CRSP) in the form of a survivorship-bias free mutual fund data base hosted by Wharton Research Data Services (WRDS). Looking back at historical performance, including delisted funds, which have been liquidated due to subpar performance, constitutes a crucial step in order to prevent a performance bias in the training data as shown by Carhart (1995). Practically, this entails including all operating funds for any present time period in the data. Intuitively, readding unsuccessful mutual funds is logical, because if one wants to infer from historical data, the present risk of failure should also be reflected in the historical data.
+
+More than $64,000$ open-ended mutual funds, including equity funds, fixed income funds, international funds, variable annuity underlying funds as well as passive ETFs and ETNs are contained in the CRSP data base. The observation period stretches from December 1961 until 2021 and various information is stored in separate files linked by an identification number for each fund. Instances of available data sets are the history of each mutual fund’s name, investment style, fee structure, holdings, returns, net asset values (NAV), total net assets (TNA), distributions, asset class codes, management information and so forth as shown below (CRSP Survivorship-Bias Free Mutual Fund Data Base Manual, 2022).
+
+```{r CRSP Structure Chart, echo=F, out.width="70%", fig.align='center', dpi=300}
+
+knitr::include_graphics("C:/Users/mathi/OneDrive/Universitaet/6th semester/Bachelor's thesis/Graphics/CRSP Structure.png")
+
+```
+
+Due to the wide range of information, some exclusions are made prior to starting the analysis. Firstly, funds with front or rear load fees are unsuitable for an investment approach entailing frequent rebalancing, as these types of fees significantly weigh down the net return achieved by the fund. As the forecast period of the algorithms is one year, this approach entails frequent rebalancing. Hence, similarly to the approach of De Miguel (2021), all observations from these funds are dropped. Taking a step back and reflecting on the initial goal of the analysis leads to the conclusion that passive funds need to be excluded from the analysis as well. Investors buying into passive ETFs and index funds tend to do so in order to build exposure in a certain region or industry, not however to identify outperforming fund managers, as these products are not actively managed and in a practical setting often constitute the benchmark themselves. In addition, the data contain equity, fixed income, mixed and other funds. Examples of the latter category are mortgage funds, event driven funds, multi-strategy funds, options arbitrage funds and stable value funds. These different types of investments have different characteristics and constitute separate problems from the point of view of return prediction and identification of best performers. Due to information on equity funds being the richest with a share of nearly 60% of all observations in the CRSP data set, the analysis continues with the equity asset class, disregarding fixed income, mixed and other funds. In practice, investment professionals often filter out funds below a certain size with regard to total net assets. There exists a conflict between data availability and comparability to practice, in that higher TNA thresholds lead to a higher loss in the quantity of observations. For instance, a limit of USD MM $100$ to USD MM $500$, which is representative of limits set in practice, would lead to a loss between $60.6 \%$ to $83.9 \%$ of observations for the final cleaned data set. Therefore, as a compromise, a limit of USD MM $20$ is used, which eliminates $37.3 \%$ of the remaining observations and leaves a sufficient absolute number of observations for training. Additionally, a lower threshold from today's perspective also constitutes a compromise for observations from several decades ago, bearing in mind asset inflation leading to larger average fund sizes over time. From the interviews with practitioners, it has also become apparent that these absolute limits are not set in stone, as there exist additional complications in practice with regard to specialised mandates and large foreign strategies registering securities in the home country, mirroring the original strategy.
+
+***
+### Methods And Approaches
+***
+
+For the analysis of the technical aspect of ML in fund selection five methods, namely random forest, gradient boosting, elastic net, support vector machines and k-nearest neighbours, are employed on a set of fund characteristics in two scenarios. Firstly, absolute alpha, which is calculated based on the four factor model introduced by Carhart (1997), constitutes the target variable and is predicted annually based on 19 fund characteristics over the period from 1999 to 2021. Secondly, relative alpha, which is calculated as the relative outperformance compared to the peer group of the respective mutual fund, constitutes the target variable and is predicted in the same manner based on 13 fund characteristics. The models are trained annually based on a 10-year rolling retrospective training data window and the top decile funds of the projected year ahead are incorporated into an equally weighted portfolio, enabling the generation of time series for transparent comparison of each of the different methods. This paper focuses on the performance of ML models in the most recent decade, i.e. the representative and relevant time frame in practice. Other academic papers analysed cumulative performance over decades in the past century, like the one by DeMiguel et al. (2021), who drew conclusions as to the success of the identification of absolute alpha based on a single factor model regression over the period 1980-2020, where all methods were only successfully identifying alpha prior to the 21st century. Furthermore, the models are evaluated based on the comparison of time series between the full sample and selected funds, which follows the literature review of Buczynski, Cuzzolin, and Sahakian (2021, p. 228), who criticised a large fraction of academic literature for not utilising time series for the final evaluation of their models.
+
+The predictors employed for both the absolute and relative approach and their respective way of aggregation to equal annual frequencies are depicted in the tables below.
+
+```{r Table for Variables Absolute, results='asis', echo=FALSE, message=FALSE, warning=FALSE}
+
+library(scales)
+library(kableExtra)
+library(tidyverse)
+library(stringr)
+
+#SET WORKING DIRECTORY
+setwd("C:/Users/mathi/OneDrive/Universitaet/6th semester/Bachelor's thesis")
+
+# CREATE TABLE
+agg <- data.frame(
+  "Variable" = c("Lagged Annual Realised Alpha (Target)",
+                 "Annual Realised Alpha",
+                 "Total Net Assets",
+                 "Manager Tenure",
+                 "Fund Age",
+                 "Expense Ratio",
+                 "Turnover Ratio",
+                 "Fund Flows",
+                 "Standard Deviation of Flows",
+                 "Sharpe Ratio",
+                 "Standard Deviation of Returns",
+                 "Skewness of Returns",
+                 "Kurtosis of Returns",
+                 "Maximum Drawdown",
+                 "Alpha from Rolling Factor Models ($\\beta_0$ t-stat)",
+                 "MKTRF from Rolling Factor Models ($\\beta_1$ t-stat)",
+                 "HML from Rolling Factor Models ($\\beta_2$ t-stat)",
+                 "SMB from Rolling Factor Models ($\\beta_3$ t-stat)",
+                 "UMD from Rolling Factor Models ($\\beta_4$ t-stat)",
+                 "$R^2$ from Rolling Factor Models"),
+  "Aggregation" = c("Sum of monthly values",
+                    "Sum of monthly values",
+                    "End of calendar year value",
+                    "End of calendar year value",
+                    "End of calendar year value",
+                    "Average of monthly values",
+                    "End of calendar year value",
+                    "Average of monthly values",
+                    "Generated based on monthly values",
+                    "Generated based on monthly values",
+                    "Generated based on monthly values",
+                    "Generated based on monthly values",
+                    "Generated based on monthly values",
+                    "Generated based on monthly values",
+                    "End of calendar year value",
+                    "End of calendar year value",
+                    "End of calendar year value",
+                    "End of calendar year value",
+                    "End of calendar year value",
+                    "End of calendar year value")
+)
+
+# KABLE TABLE
+agg %>%
+  rename("Aggregation (for each fund and year)" = Aggregation) %>%
+  kbl(caption = "Aggregation of variables to yearly values for absolute alpha prediction",
+      escape = FALSE,
+      label = "AggregationVariablesAbsolute",
+      linesep = "", booktabs = TRUE, align = "ll") %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+```
+
+```{r Table for Variables Relative, results='asis', echo=FALSE, message=FALSE, warning=FALSE}
+
+library(scales)
+library(kableExtra)
+library(tidyverse)
+library(stringr)
+
+#SET WORKING DIRECTORY
+setwd("C:/Users/mathi/OneDrive/Universitaet/6th semester/Bachelor's thesis")
+
+# CREATE TABLE
+agg <- data.frame(
+  "Variable" = c("Lagged Relative Alpha (Target)",
+                 "Relative Alpha",
+                 "Total Net Assets",
+                 "Manager Tenure",
+                 "Fund Age",
+                 "Expense Ratio",
+                 "Turnover Ratio",
+                 "Fund Flows",
+                 "Standard Deviation of Flows",
+                 "Sharpe Ratio",
+                 "Standard Deviation of Returns",
+                 "Skewness of Returns",
+                 "Kurtosis of Returns",
+                 "Maximum Drawdown"),
+  "Aggregation" = c("Generated from returns post-aggregation",
+                    "Generated from returns post-aggregation",
+                    "End of calendar year value",
+                    "End of calendar year value",
+                    "End of calendar year value",
+                    "Average of monthly values",
+                    "End of calendar year value",
+                    "Average of monthly values",
+                    "Generated based on monthly values",
+                    "Generated based on monthly values",
+                    "Generated based on monthly values",
+                    "Generated based on monthly values",
+                    "Generated based on monthly values",
+                    "Generated based on monthly values")
+)
+
+# KABLE TABLE
+agg %>%
+  rename("Aggregation (for each fund and year)" = Aggregation) %>%
+  kbl(caption = "Aggregation of variables to yearly values for relative alpha prediction",
+      escape = FALSE,
+      label = "AggregationVariablesRelative",
+      linesep = "", booktabs = TRUE, align = "ll") %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+```
+
+As a short note, for the generation of the target variable of annual realised alpha, the four-factor model from Carhart (1997) is employed for each fund separately and for each month on the rolling 36-months window basis, as shown in equation 1.
+
+$$ 
+r_{i,t} - rf_{t} = \alpha_{i,t} + \beta_{i,t}^{MKT}*MKTRF_t + \beta_{i,t}^{HML} * HML_t + \beta_{i,t}^{SMB} * SMB_t + \beta_{i,t}^{UMD} * UMD_t + \epsilon_{i,t} \tag{1}
+$$
+
+In the regression, $r_{it}$ is the fund i's monthly return at time t, $rf_{t}$ is the one-month treasury bill return constituting the risk-free rate, $MKTRF_t$ is the excess return of the market on the risk-free rate approximated by CRSP’s value-weighted market proxy index, $HML_t$ is the monthly premium of the book-to-market factor capturing value, $SMB_t$ is the monthly premium of the size factor measured by market capitalisation and $UMD_t$ is the premium on one-year momentum in equities (Carhart, 1997). The rolling window regression yields factor loadings for all four factors, t-stats, p-values as well as $R^2$ for each fund, from which time series are built, excluding the first 36 observations. The figure below provides a visual example of the factor loadings time series generated in the rolling window regression for one fund in the sample. The t-stats of the latter constitute predictors for the models.
+
+```{r Chart for Factor Loadings Visual Example, echo=FALSE, cache=TRUE, warning=FALSE, message=FALSE, out.width="100%", fig.height=3, dpi=300}
+
+library(tidyverse)
+library(ggplot2)
+library(RColorBrewer)
+library(jtools)
+
+#SET WORKING DIRECTORY
+setwd("C:/Users/mathi/OneDrive/Universitaet/6th semester/Bachelor's thesis")
+
+# PLOT
+readRDS(file = "Graphics/factorloadingsplot.rds") %>%
+ggplot(aes(x = as.Date(as.character(caldt), format = "%Y%m%d"),
+           y = value,
+           colour = name)) +
+  geom_line() +
+  labs(title = "Factor loadings from 36 months rolling regression",
+       subtitle = "One randomly chosen fund is shown",
+       x = "Time",
+       y = element_blank()) +
+  theme_bw() +
+  theme(plot.title = element_text(size = 11, face = "bold", colour = "black"),
+        plot.subtitle = element_text(face = "italic", colour = "gray50",
+                                   size = 9),
+        legend.title = element_blank(),
+        axis.title.x = element_blank(),
+        legend.position = "right",
+        panel.grid = element_blank()) +
+  scale_color_brewer(palette = "Set2")
+
+```
+
+After the rolling window regressions, realised monthly alpha generated by each fund in each monthly period is calculated as
+
+$$
+\alpha_{i,t} = (r_{i,t} - rf_{t}) - (\beta_{i,t}^{MKT}*MKTRF_t + \beta_{i,t}^{HML} * HML_t + \beta_{i,t}^{SMB} * SMB_t + \beta_{i,t}^{UMD} * UMD_t) \tag{2}
+$$
+
+that is, realised alpha for each period constitutes the regression's intercept plus the error term $\epsilon_{i,t}$ resulting from the imperfect fit of the linear regression, as $R^2<1$. In other words, monthly realised alpha is defined as the excess return over the return attributable to the four factors each fund generated for each period and represents the target variable at yearly frequency for all predictive models on absolute alpha at later stages. The chart below shows the distribution of annual realised alpha in the sample by year.
+
+```{r Chart for yrea_alpha, echo=F, cache=TRUE, warning=FALSE, message=FALSE, out.width="100%", fig.height=3, fig.align='center', dpi=300}
+
+library(tidyverse)
+library(ggplot2)
+library(RColorBrewer)
+library(jtools)
+
+#SET WORKING DIRECTORY
+setwd("C:/Users/mathi/OneDrive/Universitaet/6th semester/Bachelor's thesis")
+
+# IMPORT CLEANED DATASET
+dt_clean <- read.csv("Data/Data Clean FINAL absolute.csv")
+
+# CHARTS
+dt_clean %>%
+  group_by(year) %>%
+  mutate(mean_lagged_alpha = mean(yrea_alpha_lagged)) %>%
+  ungroup() %>%
+  ggplot(aes(x = as.factor(year),
+             y = yrea_alpha_lagged,
+             colour = ifelse(mean_lagged_alpha < 0,
+                             "Mean < 0",
+                             "Mean > 0"))) +
+  geom_boxplot(outlier.alpha = 0.05) +
+  geom_hline(yintercept = 0, colour = "gray50", lty = "dotted") +
+  labs(title = "Distribution by Year: Annual Absolute Realised Alpha",
+       subtitle = "Generated from 36-months rolling window regression",
+       x = "Year",
+       y = "Annual Realised Alpha") +
+  theme_minimal() +
+  scale_y_continuous(limits = c(-0.3,0.3),
+                     labels = scales::percent) +
+  theme_apa(legend.pos = "bottom",
+            legend.use.title = FALSE,
+            legend.font.size = 9,
+            x.font.size = 9,
+            y.font.size = 9,
+            facet.title.size = 10,
+            remove.y.gridlines = TRUE,
+            remove.x.gridlines = TRUE) +
+  theme(plot.title = element_text(size = 11, face = "bold", colour = "black"),
+        plot.subtitle = element_text(face = "italic", colour = "gray50",
+                                   size = 9),
+        legend.title = element_blank(),
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank()) +
+  scale_colour_manual(values = c("firebrick", "chartreuse4"))
+
+```
+
+Relative alpha, the target variable in the second approach, is just the relative outperformance of one fund compared to its peer group for any given period, as defined below.
+
+$$\alpha^{\text{relative}}_{i_p,t} = r_{i,t} - \frac{1}{N_p} \sum_{j_p = 1}^{N_p}{r_{j_p}} \tag{4}$$
+
+Details on further feature generation, the data cleaning process, functioning of the algorithms and more are omitted to keep this summary concise. However, you are welcome to reach out for further, detailed information.
+
+***
+### Main Results
+***
+
+The two approaches in predicting absolute and relative alpha show slightly different results, though they do not stand in complete contrast to each other.
+
+Firstly, no model is capable of identifying continuously positive mean absolute alphas, leading to a negative cumulative absolute alpha across all methods over the most recent decade. However, despite cumulative absolute alpha being negative, the majority of all models, except for k-nearest neighbours, are capable of selecting funds beating the available sample alpha. Namely, linear methods, that is elastic net and ordinary least squares, perform significantly better than their non-linear counterparts, which is due to the deterioration of goodness of fit caused by the time-varying and weak predictive power of fund characteristics when applying the trained algorithms to the post-sample prediction period. From the first chart below, no apparent superiority of the portfolios selected by the methods can be concluded. Looking at the cumulative performance in the second chart below paints a clearer image.
+
+```{r Selected funds monthly mean with confidence bands, echo=FALSE, cache=TRUE, warning=FALSE, message=FALSE, out.width="100%", fig.height=5, fig.align='center', dpi=300}
+
+# ____________________________________________________________________________
+# ADMIN
+
+library(tidyverse)
+library(lubridate)
+
+setwd("C:/Users/mathi/OneDrive/Universitaet/6th semester/Bachelor's thesis")
+
+# ____________________________________________________________________________
+# IMPORTING DATA
+
+# Sample
+sample_funds <- read.csv("Data/Eval Models absolute.csv")
+
+# Selected funds with out-of-sample mrea_alpha
+funds_selected_monthly <- read.csv("Data/Selected Funds Monthly absolute.csv")
+
+# ____________________________________________________________________________
+# VISUALISATION
+
+# With confidence bands
+sample_alpha <- sample_funds %>%
+  mutate(ym = ymd(substr(caldt, 1, 6), truncated = 1),
+         ID = "Sample") %>%
+  group_by(ym) %>%
+  summarise(mean_alpha = mean(mrea_alpha),
+            ten_pctl_alpha =
+              quantile(mrea_alpha, probs = 0.1)[[1]],
+            ninety_pctl_alpha =
+              quantile(mrea_alpha, probs = 0.9)[[1]],
+            ID = last(ID)) %>%
+  filter(ym >= ymd(substr(min(funds_selected_monthly$caldt), 1, 6), 
+                   truncated = 1),
+         ym <= ymd(substr(max(funds_selected_monthly$caldt), 1, 6), 
+                   truncated = 1)) %>% 
+  replicate(n = 6, simplify = F) %>% 
+  bind_rows() %>% 
+  mutate(model = rep(c("EN", "GB", "OLS", "RF", "KNN", "SVM"), each = 136))
+
+ml_methods <- c("EN" = "Elastic Net",
+                "GB" = "Gradient Boosting",
+                "KNN" = "K-Nearest Neighbours",
+                "OLS" = "Ordinary Least Squares", 
+                "RF" = "Random Forest", 
+                "SVM" = "Support Vector Machines")
+
+funds_selected_monthly %>%
+  mutate(ym = ymd(substr(caldt, 1, 6), truncated = 1),
+         ID = "Selected Funds") %>%
+  group_by(ym, model) %>%
+  summarise(mean_alpha = mean(mrea_alpha),
+            ten_pctl_alpha =
+              quantile(mrea_alpha, probs = 0.1)[[1]],
+            ninety_pctl_alpha =
+              quantile(mrea_alpha, probs = 0.9)[[1]],
+            ID = last(ID),
+            model = last(model)) %>%
+  bind_rows(sample_alpha) %>%
+  ggplot(aes(x = ym, y = mean_alpha, colour = ID)) +
+  geom_line(size = 0.4) +
+  geom_ribbon(aes(ymin = ten_pctl_alpha, ymax = ninety_pctl_alpha, fill = ID),
+              linetype = 3, alpha = 0.1, size = 0.4) +
+  facet_wrap(~model, ncol = 2, labeller = as_labeller(ml_methods)) +
+  labs(title = "Monthly realised alpha for selected funds versus sample",
+       subtitle = "Confidence Bands: 10th and 90th percentile",
+       y = "Monthly realised alpha",
+       x = NULL) +
+  theme_bw() +
+  theme(legend.position = "bottom",
+        panel.grid = element_blank(),
+        legend.title = element_blank(),
+        plot.title = element_text(size = 11, face="bold", colour="black"),
+        plot.subtitle = element_text(face = "italic", colour = "gray50",
+                                     size = 10),
+        axis.title.x = element_text(size = 10),
+        axis.title.y = element_text(size = 10)) +
+  scale_fill_manual(values = c("grey50", "red")) +
+  scale_colour_manual(values = c("grey50", "red")) +
+  scale_y_continuous(labels = scales::percent_format())
+
+```
+
+```{r Cumulative abnormal returns, echo=FALSE, cache=TRUE, warning=FALSE, message=FALSE, out.width="100%", fig.height=3, fig.align='center', dpi = 300}
+
+# ____________________________________________________________________________
+# ADMIN
+
+library(tidyverse)
+library(lubridate)
+
+setwd("C:/Users/mathi/OneDrive/Universitaet/6th semester/Bachelor's thesis")
+
+# ____________________________________________________________________________
+# IMPORTING DATA
+
+# Sample
+sample_funds <- read.csv("Data/Eval Models absolute.csv")
+
+# Selected funds with out-of-sample mrea_alpha
+funds_selected_monthly <- read.csv("Data/Selected Funds Monthly absolute.csv")
+
+# ____________________________________________________________________________
+# VISUALISATION
+
+# Cumulative abnormal returns
+sample_funds %>%
+  mutate(ym = ymd(substr(caldt, 1, 6), truncated = 1),
+         ID = "Sample Alpha") %>%
+  group_by(ym) %>%
+  summarise(mean_alpha = mean(mrea_alpha),
+            ID = last(ID)) %>%
+  filter(ym >= ymd(substr(min(funds_selected_monthly$caldt), 1, 6), 
+                   truncated = 1),
+         ym <= ymd(substr(max(funds_selected_monthly$caldt), 1, 6), 
+                   truncated = 1)) %>% 
+  pivot_wider(names_from = ID, values_from = mean_alpha) %>% 
+  bind_cols(
+    funds_selected_monthly %>%
+      mutate(ym = ymd(substr(caldt, 1, 6), truncated = 1)) %>%
+      group_by(ym, model) %>%
+      summarise(mean_alpha = mean(mrea_alpha),
+                model = last(model)) %>%
+      ungroup() %>%
+      pivot_wider(names_from = model, values_from = mean_alpha) %>% 
+      select(-ym)
+    ) %>% 
+  rename(sample = `Sample Alpha`) %>% 
+  mutate(across(sample:SVM, ~cumsum(.x))) %>% 
+  pivot_longer(cols = sample:SVM) %>%
+  mutate(name = case_when(name == "EN" ~ "Elastic Net",
+                          name == "GB" ~ "Gradient Boosting",
+                          name == "KNN" ~ "K-Nearest Neighbours",
+                          name == "OLS" ~ "Ordinary Least Squares",
+                          name == "RF" ~ "Random Forest",
+                          name == "sample" ~ "Sample",
+                          name == "SVM" ~ "Support Vector Machines")) %>% 
+  ggplot(aes(ym, value, colour = name)) +
+  geom_line() +
+  labs(title = "Cumulative absolute realised alpha by model",
+       subtitle = "Indexed at the beginning of 2010",
+       y = "Cumulative absolute realised alpha",
+       x = NULL) +
+  theme_bw() +
+  theme(legend.position = "right",
+        panel.grid = element_blank(),
+        legend.title = element_blank(),
+        plot.title = element_text(size = 11, face="bold", colour="black"),
+        plot.subtitle = element_text(face = "italic", colour = "gray50",
+                                     size = 10),
+        axis.title.x = element_text(size = 10),
+        axis.title.y = element_text(size = 10)) +
+  scale_color_brewer(palette = "Set2") +
+  scale_y_continuous(labels = scales::percent_format())
+
+```
+
+From the out-of-sample fit in the chart below, it quickly becomes apparent that the predictors carry little predictive power over into the post-sample period.
+
+```{r Selected funds Prediction versus actuals absolute, echo=FALSE, cache=TRUE, warning=FALSE, message=FALSE, out.width="100%", fig.height=3, dpi=300, fig.align='center'}
+
+# ____________________________________________________________________________
+# ADMIN
+setwd("C:/Users/mathi/OneDrive/Universitaet/6th semester/Bachelor's thesis")
+
+# ____________________________________________________________________________
+# IMPORTING DATA
+en_sel_yearly <- read.csv("Code/Selected Funds EN absolute 202204181658.csv") %>% 
+  mutate(model = "EN")
+
+gb_sel_yearly <- read.csv("Code/Selected Funds GB absolute 202204180329.csv") %>% 
+  mutate(model = "GB")
+
+knn_sel_yearly <- read.csv("Code/Selected Funds kNN absolute 202204210631.csv") %>%
+  mutate(model = "KNN")
+
+ols_sel_yearly <- read.csv("Code/Selected Funds OLS absolute 202204161706.csv") %>% 
+  mutate(model = "OLS")
+
+rf_sel_yearly <- read.csv("Code/Selected Funds RF absolute 202204170606.csv") %>% 
+  mutate(model = "RF")
+
+svm_sel_yearly <- read.csv("Code/Selected Funds SVM absolute 202204191835.csv") %>% 
+  mutate(model = "SVM")
+
+# ____________________________________________________________________________
+# DATA WRANGLING
+funds_sel_yearly <- bind_rows(
+  en_sel_yearly,
+  gb_sel_yearly,
+  knn_sel_yearly,
+  ols_sel_yearly,
+  rf_sel_yearly,
+  svm_sel_yearly
+)
+
+# ____________________________________________________________________________
+# VISUALISATION
+
+ml_methods <- c("EN" = "Elastic Net",
+                "GB" = "Gradient Boosting",
+                "KNN" = "K-Nearest Neighbours",
+                "OLS" = "Ordinary Least Squares", 
+                "RF" = "Random Forest", 
+                "SVM" = "Support Vector Machines")
+
+funds_sel_yearly %>%
+  ggplot(aes(x = yrea_alpha_lagged, y = pred_alpha)) +
+  geom_point(colour = "midnightblue", alpha = 0.4) +
+  facet_wrap(~model, labeller = as_labeller(ml_methods)) +
+  geom_smooth(method = "lm", size = 0.75) +
+  geom_abline() +
+  labs(title = "Predicted versus actual alpha for selected funds (out-of-sample)",
+       subtitle = "Only top decile funds are shown (whole prediction period)",
+       y = "Predicted absolute alpha",
+       x = "Actual absolute alpha") +
+  theme_bw() +
+  theme(legend.position = "right",
+        panel.grid = element_blank(),
+        legend.title = element_blank(),
+        plot.title = element_text(size = 11, face="bold", colour="black"),
+        plot.subtitle = element_text(face = "italic", colour = "gray50",
+                                     size = 10),
+        axis.title.x = element_text(size = 10),
+        axis.title.y = element_text(size = 10)) +
+  scale_y_continuous(labels = scales::percent_format(),
+                     breaks = seq(-0.2,0.2,0.2)) +
+  scale_x_continuous(labels = scales::percent_format(),
+                     breaks = seq(-0.2,0.2,0.2))
+
+```
+
+Secondly, the prediction of relative alpha shows stark differences even just among the five most prevalent fund classes, with highest success for multi-cap core funds and worst selection for small-cap core funds as seen in the chart below. It has to be noted that the sample performance is approximately zero by definition, hence successfully performing methods must exhibit positive relative alpha, not merely higher alpha than the sample as in the absolute case. Averaging performance of the same models across all fund classes reveals that all models are able to capture relative alpha cumulatively over the recent decade, although strong variability of the cumulative results pose a threat for shorter investment periods. The latter is shown in the second chart below.
+
+```{r Cumulative abnormal returns relative, echo=FALSE, cache=TRUE, warning=FALSE, message=FALSE, out.width="100%", fig.height=5, fig.align='center', dpi=300}
+
+# ____________________________________________________________________________
+# ADMIN
+
+library(tidyverse)
+library(lubridate)
+
+setwd("C:/Users/mathi/OneDrive/Universitaet/6th semester/Bachelor's thesis")
+
+# ____________________________________________________________________________
+# IMPORTING DATA
+
+# Final cleaned data for merging of lipper_class_name
+dt_clean <- read.csv("Data/Data Clean FINAL relative.csv") %>% 
+  select(crsp_fundno, lipper_class_name) %>% 
+  distinct()
+
+# Sample
+sample_funds <- read.csv("Data/Eval Models relative.csv") %>% 
+  left_join(dt_clean, by = "crsp_fundno")
+
+# Selected funds with out-of-sample mrea_alpha
+funds_selected_monthly <- 
+  read.csv("Data/Selected Funds Monthly relative.csv") %>% 
+  left_join(dt_clean, by = "crsp_fundno")
+
+# ____________________________________________________________________________
+# DATA WRANGLING
+
+# Generate monthly mean returns from sample funds for each class and month
+sample_class_returns <- sample_funds %>%
+  mutate(ym = ymd(substr(caldt, 1, 6), truncated = 1)) %>%
+  group_by(ym, lipper_class_name) %>%
+  mutate(mean_class_return = mean(mret)) %>% 
+  ungroup() %>% 
+  select(ym, lipper_class_name, mean_class_return) %>% 
+  distinct()
+  
+# ____________________________________________________________________________
+# VISUALISATION
+
+# Can't compare to sample, as the sample alpha mean is zero
+# Analysing methods is enough
+  
+# selected funds
+funds_selected_monthly %>%
+  as_tibble() %>% 
+  mutate(ym = ymd(substr(caldt, 1, 6), truncated = 1)) %>% 
+  select(ym, crsp_fundno, model, lipper_class_name, mret) %>% 
+  left_join(sample_class_returns, by = c("ym", "lipper_class_name")) %>%
+  mutate(relative_alpha_monthly = mret - mean_class_return) %>%
+  group_by(ym, model, lipper_class_name) %>% 
+  summarise(mean_alpha = mean(relative_alpha_monthly)) %>% 
+  ungroup() %>% 
+  group_by(lipper_class_name, model) %>% 
+  mutate(cumulative = cumsum(mean_alpha)) %>% 
+  mutate(model = case_when(model == "EN" ~ "Elastic Net",
+                           model == "GB" ~ "Gradient Boosting",
+                           model == "KNN" ~ "K-Nearest Neighbours",
+                           model == "OLS" ~ "Ordinary Least Squares",
+                           model == "RF" ~ "Random Forest",
+                           model == "sample" ~ "Sample",
+                           model == "SVM" ~ "Support Vector Machines")) %>% 
+  ggplot(aes(ym, cumulative, colour = model)) +
+  geom_line() +
+  geom_hline(yintercept = 0, lty = "dotted", colour = "gray50") +
+  facet_wrap(~lipper_class_name, ncol = 2) +
+  labs(title = "Cumulative realised relative alpha by model",
+       subtitle = "Indexed at the beginning of 2010",
+       y = "Cumulative relative realised alpha",
+       x = NULL) +
+  theme_bw() +
+  theme(legend.position = "right",
+        panel.grid = element_blank(),
+        legend.title = element_blank(),
+        plot.title = element_text(size = 11, face="bold", colour="black"),
+        plot.subtitle = element_text(face = "italic", colour = "gray50",
+                                     size = 10),
+        axis.title.x = element_text(size = 10),
+        axis.title.y = element_text(size = 10)) +
+  scale_color_brewer(palette = "Set2") +
+  scale_y_continuous(labels = scales::percent_format())
+
+```
+
+```{r Cumulative abnormal returns relative on average, echo=FALSE, cache=TRUE, warning=FALSE, message=FALSE, out.width="100%", fig.height=3, fig.align='center', dpi=300}
+
+# ____________________________________________________________________________
+# ADMIN
+library(tidyverse)
+library(lubridate)
+
+setwd("C:/Users/mathi/OneDrive/Universitaet/6th semester/Bachelor's thesis")
+
+# ____________________________________________________________________________
+# IMPORTING DATA
+
+# Final cleaned data for merging of lipper_class_name
+dt_clean <- read.csv("Data/Data Clean FINAL relative.csv") %>% 
+  select(crsp_fundno, lipper_class_name) %>% 
+  distinct()
+
+# Sample
+sample_funds <- read.csv("Data/Eval Models relative.csv") %>% 
+  left_join(dt_clean, by = "crsp_fundno")
+
+# Selected funds with out-of-sample mrea_alpha
+funds_selected_monthly <- 
+  read.csv("Data/Selected Funds Monthly relative.csv") %>% 
+  left_join(dt_clean, by = "crsp_fundno")
+
+# ____________________________________________________________________________
+# DATA WRANGLING
+
+# Generate monthly mean returns from sample funds for each class and month
+sample_class_returns <- sample_funds %>%
+  mutate(ym = ymd(substr(caldt, 1, 6), truncated = 1)) %>%
+  group_by(ym, lipper_class_name) %>%
+  mutate(mean_class_return = mean(mret)) %>% 
+  ungroup() %>% 
+  select(ym, lipper_class_name, mean_class_return) %>% 
+  distinct()
+  
+# ____________________________________________________________________________
+# VISUALISATION
+
+funds_selected_monthly %>%
+  as_tibble() %>% 
+  mutate(ym = ymd(substr(caldt, 1, 6), truncated = 1)) %>% 
+  select(ym, crsp_fundno, model, lipper_class_name, mret) %>% 
+  left_join(sample_class_returns, by = c("ym", "lipper_class_name")) %>% 
+  mutate(relative_alpha_monthly = mret - mean_class_return) %>%
+  group_by(ym, model) %>% 
+  summarise(mean_alpha = mean(relative_alpha_monthly)) %>%
+  ungroup() %>% 
+  group_by(model) %>%
+  mutate(cumulative = cumsum(mean_alpha)) %>% 
+  mutate(model = case_when(model == "EN" ~ "Elastic Net",
+                           model == "GB" ~ "Gradient Boosting",
+                           model == "KNN" ~ "K-Nearest Neighbours",
+                           model == "OLS" ~ "Ordinary Least Squares",
+                           model == "RF" ~ "Random Forest",
+                           model == "sample" ~ "Sample",
+                           model == "SVM" ~ "Support Vector Machines")) %>% 
+  ggplot(aes(ym, cumulative, colour = model)) +
+  geom_line() +
+  geom_hline(yintercept = 0, lty = "dotted", colour = "gray50") +
+  labs(title = "Cumulative realised relative alpha by model over all fund classes",
+       subtitle = "Indexed at the beginning of 2010",
+       y = "Cumulative realised relative alpha",
+       x = NULL) +
+  theme_bw() +
+  theme(legend.position = "right",
+        panel.grid = element_blank(),
+        legend.title = element_blank(),
+        plot.title = element_text(size = 11, face="bold", colour="black"),
+        plot.subtitle = element_text(face = "italic", colour = "gray50",
+                                     size = 10),
+        axis.title.x = element_text(size = 10),
+        axis.title.y = element_text(size = 10)) +
+  scale_color_brewer(palette = "Set2") +
+  scale_y_continuous(labels = scales::percent_format())
+
+```
+
+Thirdly, following the qualitative analysis of the interviews conducted with fund selection experts, several barriers to implementation of the
+methods were identified, namely data availability and quality, trading costs, the need to account for soft information, academic assumptions conflicting with practice and the need to maximise the right target variable. The latter emerges from absolute and relative alpha not being representative of the situation faced in practice, as other factors, such as ESG, are becoming increasingly important and need to be accounted for.
+
+Details on time-varying variable importance, the characteristics of chosen portfolios and more are omitted to keep this summary the most concise possible. However, you are welcome to reach out for further, detailed information.
+
+***
+### Conclusion And Implications For Practitioners
+***
+
+Conclusively, the thesis shows that the predictability of abnormal returns of equity mutual funds has strongly deteriorated over time to a point where the reliable selection of outperforming mutual funds based on fund characteristics with machine learning methods is not given any more. By extending methods and
+remediating inconsistencies in the conclusions of existing literature with the consideration of the practical perspective gained from the qualitative evaluation of interviews, this thesis constitutes an extension of the literature and stands in contrast to literature claiming exceptional performance of the methods based on cumulative performance over many decades reaching into the past century. The approach of predicting relative alpha faces the same limitations, but instead leads to additional style biases creeping in, in turn not constituting a viable alternative in its form as presented in this thesis either.
+
+From recent literature, it has become apparent that the inclusion of macroeconomic variables and alternative predictors, such as sentiment, is crucial in order to exploit interactions and enable the identification of positive abnormal returns, even though the latter need further replication to account for assumptions conflicting with practice, such as the shorting of the bottom decile portfolio. Further research on the quantification and predictive ability of macroeconomic, political and regulatory variables constitutes the crucial building block on top of the obtained results of this thesis, enabling a more holistic conclusion on the usefulness of machine learning methods for practitioners in fund selection.
+
+
+&nbsp;
+<hr />
+<p style="text-align: center;">A work by <a href="https://www.linkedin.com/in/mathias-steilen/">Mathias Steilen</a></p>
+&nbsp;
