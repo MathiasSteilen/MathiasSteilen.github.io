@@ -1,0 +1,30 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Hello! 👋",
+    "section": "",
+    "text": "I’m a graduate statistics student at ETH Zurich in Switzerland and have a deep interest in machine learning engineering and operations. I hold a BA in Economics from the University of St.Gallen, during which I have discovered a passion for discovering meaning in data and which has allows me to connect the rigorous quantitative methods at ETH to the business and economic perspective of the real world.\nIn my part-time role as a Junior Operations Research Analyst at BKW, I employ predictive modelling techniques and data analysis, predominantly using Python and R and assist the asset optimisation team by creating actionable and digestible insights from data.\nIn addition to my academic and professional interests, I have a passion for outdoor sports (🏃), human-powered (🚲) and motorised (🏍️) two-wheelers, and a background in boxing (🥊).\nThank you very much for visiting and feel free to reach out for feedback or to connect over my socials."
+  },
+  {
+    "objectID": "index.html#education",
+    "href": "index.html#education",
+    "title": "Hello! 👋",
+    "section": "Education",
+    "text": "Education\n\nETH Zürich | Zurich, Switzerland\nMSc in Statistics | Sep 2023 – Present\n\nAnticipated graduation in 2025\n\n\nUniversity of St. Gallen (HSG) | Switzerland\nM.A. in Banking and Finance (MBF) | Sep 2022 – Feb 2023 (discontinued)\n\nSelected coursework: Applications of Machine Learning, Programming in Advanced Computer Languages, Predictive Econometrics, Quantitative Methods\nDiscontinued due to a desire to pursue quantitative methods deeper at ETHZ\n\n\nUniversity of St. Gallen (HSG) | St. Gallen, Switzerland\nB.A. in Economics | Sep 2019 – Jul 2022\n\nThesis: Application of Machine Learning to Mutual Fund Selection (5.75/6.00)\nFocus on Data Handling and Statistical Modelling\nSelected Course Work: Mathematics for Economists, Statistics, Causal Econometrics, Data Analytics, Fundamentals of Computer Science, Monte Carlo and Quantitative Decision Support, Development of Web Applications, Corporate Finance, Corporate Valuation, Money Banking and Finance"
+  },
+  {
+    "objectID": "index.html#experience",
+    "href": "index.html#experience",
+    "title": "Hello! 👋",
+    "section": "Experience",
+    "text": "Experience\n\nBKW | Berne, Switzerland\nJunior Operations Research Analyst | Oct 2023 – Present\n\nSupporting the operations research team with predictive modeling, data analysis, and data visualisation\nMajority of tasks involve Python (Pandas, Polars, PyTorch, Scikit-learn, Plotly, Shiny) and R (Tidymodels, Shiny, ggplot2)\n\n\nBKW | Berne, Switzerland\nInternship – Machine Learning Intern in Asset Optimization | Apr 2023 – Sep 2023\n\nResponsible for a feasibility study on the application of reinforcement learning algorithms for the optimisation of flexible powerplants in the day-ahead markets\nOther side-projects: Fine-tuning deep learning models for load forecasting, developing interactive Shiny dashboards, backtesting trading strategies in the forward markets\n\n\nBergos Privatbank | Zurich, Switzerland\nInternship – Active Advisory | Jul 2021 – Sep 2021\n\nBuy-side investment advisory for private clients across asset classes (Focus on Equities and Alternatives)\nAutomation of monitoring tasks (e.g. automated downgrade alerts, gap analysis for missing data on funds)\n\n\nPwC | Luxembourg\nInternship – Regulatory & Compliance Advisory Services | Apr 2019 – May 2019\n\nOptimisation of Excel models and creation of VBA applications for Anti-Money-Laundering screenings (web scraping, automated documentation)"
+  },
+  {
+    "objectID": "blog.html",
+    "href": "blog.html",
+    "title": "Blog",
+    "section": "",
+    "text": "No matching items"
+  }
+]

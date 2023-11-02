@@ -1,0 +1,24 @@
+project:
+  type: website
+
+website:
+  title: "Mathias Steilen"
+  navbar:
+    right:
+      - text: Blog
+        href: blog.qmd 
+      - text: About
+        href: index.qmd
+      - icon: linkedin
+        href: https://www.linkedin.com/in/mathias-steilen/
+      - icon: github
+        href: https://github.com/MathiasSteilen
+format:
+  html:
+    theme:
+      dark: cyborg
+      light: cosmo
+    css: styles.css
+
+
+
