@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Mathias Steilen</title>
+<title>Mathias Steilen - Blog</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -29,9 +29,12 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-listing/list.min.js"></script>
+<script src="site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
@@ -66,15 +69,73 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script>
 
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-listing .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      
+      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  </script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
@@ -89,11 +150,11 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="./about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./blog.html"> 
+    <a class="nav-link active" href="./index.html" aria-current="page"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item compact">
@@ -115,110 +176,755 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-page-left">
+      <h1 class="title">Blog</h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta column-page-left">
+
+      
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(18)</span></div><div class="category" data-category="Data Visualisation">Data Visualisation <span class="quarto-category-count">(7)</span></div><div class="category" data-category="Energy Economics">Energy Economics <span class="quarto-category-count">(4)</span></div><div class="category" data-category="Finance">Finance <span class="quarto-category-count">(4)</span></div><div class="category" data-category="Machine Learning">Machine Learning <span class="quarto-category-count">(7)</span></div><div class="category" data-category="Optimisation">Optimisation <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Probability">Probability <span class="quarto-category-count">(3)</span></div><div class="category" data-category="Python">Python <span class="quarto-category-count">(1)</span></div><div class="category" data-category="R">R <span class="quarto-category-count">(17)</span></div><div class="category" data-category="Simulation">Simulation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Web Scraping">Web Scraping <span class="quarto-category-count">(2)</span></div></div></div>
 <!-- main -->
-<div class="quarto-about-solana column-body content">
-  <div class="about-entity">
-    <div class="entity-contents">
-      <header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Mathias Steilen</h1>
-</div>
-<div class="quarto-title-meta">
+<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+
+
+
+
+
+
+
+
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="listing-actions-group">
+   <div class="input-group input-group-sm quarto-listing-sort">
+     <span class="input-group-text"><i class="bi bi-sort-down"></i></span>
+     <select id="listing-listing-sort" class="form-select" aria-label="Order By" onchange="window['quarto-listings']['listing-listing'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
+       <option value="" disabled="" selected="" hidden="">Order By</option>
+       <option value="index" data-direction="asc">Default</option>
+         <option value="listing-title" data-direction="asc">
+          Title
+        </option>
+         <option value="listing-date-sort" data-direction="asc">
+          Date - Oldest
+        </option>
+         <option value="listing-date-sort" data-direction="desc">
+          Date - Newest
+        </option>
+         <option value="listing-author" data-direction="asc">
+          Author
+        </option>
+     </select>
   </div>
-</header> <div class="about-links">
-  <a href="https://mathiassteilen.github.io/blog.html" class="about-link" rel="" target="">
-    <i class="bi bi-browser-safari"></i>
-     <span class="about-link-text">Coding Blog</span>
-  </a>
-  <a href="https://www.linkedin.com/in/mathias-steilen/" class="about-link" rel="" target="">
-    <i class="bi bi-linkedin"></i>
-     <span class="about-link-text">LinkedIn</span>
-  </a>
-  <a href="https://github.com/MathiasSteilen" class="about-link" rel="" target="">
-    <i class="bi bi-github"></i>
-     <span class="about-link-text">Github</span>
-  </a>
-</div>
-      <div class="about-contents"><main class="content" id="quarto-document-content">
-<!-- <div style="text-align: justify">  -->
-<p>I’m a graduate statistics student at ETH Zurich in Switzerland with a BA in Economics and a passion for using quantitative methods to drive business value.</p>
-<p>In my part-time role as Junior Analytic Quant at BKW next to my studies, I employ predictive modelling techniques and data analysis, predominantly using Python and R and assist the asset optimisation team by creating actionable and digestible insights from data.</p>
-<p>In addition to my academic and professional interests, I have a passion for outdoor sports (🏃), human-powered (🚲) and motorised (🏍️) two-wheelers, and a background in boxing (🥊).</p>
-<p>Thank you very much for visiting and feel free to explore posts on my Blog using the navigation bar on the top right.</p>
-</main></div>
+    <div class="input-group input-group-sm quarto-listing-filter">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input type="text" class="search form-control" placeholder="Filter">
     </div>
-    <img src="profile.png" class="about-image
-  rounded " style="width: 15em;">
-  </div>
+</div>
+<div class="list quarto-listing-default">
+<div class="quarto-post image-right" data-index="0" data-categories="Optimisation,Python,Energy Economics" data-listing-date-sort="1754690400000" data-listing-file-modified-sort="1727185804227" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2424">
+<div class="thumbnail">
+<p><a href="./posts/20240918-Heuristics-Pumped-Storage/index.html" class="no-external"></a></p><a href="./posts/20240918-Heuristics-Pumped-Storage/index.html" class="no-external">
+<p><img src="./posts/20240918-Heuristics-Pumped-Storage/image.jpg" class="thumbnail-image"></p>
+</a><p><a href="./posts/20240918-Heuristics-Pumped-Storage/index.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/20240918-Heuristics-Pumped-Storage/index.html" class="no-external">Classical vs.&nbsp;Heuristic Optimisation: Comparing MILP, Genetic Algorithms and Simulated Annealing for Pumped Storage Hydropower Optimisation</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./posts/20240918-Heuristics-Pumped-Storage/index.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Optimisation'); return false;">
+Optimisation
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Python'); return false;">
+Python
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Energy Economics'); return false;">
+Energy Economics
 </div>
 </div>
-<section id="education" class="level2">
-<h2 data-anchor-id="education">Education</h2>
-<div style="text-align: left">
-<p><strong>ETH Zürich</strong> | Zurich, Switzerland<br>
-MSc in Statistics | Sep 2023 – Present</p>
-<ul>
-<li>Anticipated graduation in Summer 2025</li>
-<li>Relevant Coursework: Statistical Modelling, Likelihood Inference, Computational Statistics, Machine Learning, Data Analytics</li>
-<li>Student Project on European Crossborder Power Trading with RWE Supply &amp; Trading</li>
-</ul>
-<hr>
-<p><strong>University of St.&nbsp;Gallen (HSG)</strong> | Switzerland<br>
-M.A.&nbsp;in Banking and Finance (MBF) | Sep 2022 – Feb 2023 (discontinued)</p>
-<ul>
-<li>Selected coursework: Applications of Machine Learning, Programming in Advanced Computer Languages, Predictive Econometrics, Quantitative Methods</li>
-<li>Discontinued due to a desire to pursue quantitative methods deeper at ETHZ</li>
-</ul>
-<hr>
-<p><strong>University of St.&nbsp;Gallen (HSG)</strong> | St.&nbsp;Gallen, Switzerland<br>
-B.A. in Economics | Sep 2019 – Jul 2022</p>
-<ul>
-<li>Thesis: Application of Machine Learning to Mutual Fund Selection (5.75/6.00)</li>
-<li>Focus on Data Handling and Statistical Modelling</li>
-<li>Selected Course Work: Mathematics for Economists, Statistics, Causal Econometrics, Data Analytics, Fundamentals of Computer Science, Monte Carlo and Quantitative Decision Support, Development of Web Applications, Corporate Finance, Corporate Valuation, Money Banking and Finance</li>
-</ul>
+<div class="listing-description">
+<a href="./posts/20240918-Heuristics-Pumped-Storage/index.html" class="no-external">I implement the genetic algorithm and simulated annealing to optimise the operation of a pumped storage system in the day-ahead market. How do they compare with the solution found by classical mixed-integer linear programming? Let’s find out.</a>
 </div>
-</section>
-<section id="experience" class="level2">
-<h2 data-anchor-id="experience">Experience</h2>
-<div style="text-align: left">
-<p><strong>BKW</strong> | Bern, Switzerland<br>
-Junior Operations Research Analyst | Oct 2023 – Present</p>
-<ul>
-<li>Supporting the operations research team with predictive modeling, data analysis, and data visualisation</li>
-<li>Majority of tasks involve Python (Pandas, Polars, PyTorch, Scikit-learn, Plotly, Shiny) and R (Tidymodels, Shiny, ggplot2)</li>
-</ul>
-<hr>
-<p><strong>BKW</strong> | Bern, Switzerland<br>
-Internship – Machine Learning Intern in Asset Optimization | Apr 2023 – Sep 2023</p>
-<ul>
-<li>Responsible for a feasibility study on the application of reinforcement learning algorithms for the optimisation of flexible powerplants in the day-ahead markets</li>
-<li>Other side-projects: Fine-tuning deep learning models for load forecasting, developing interactive Shiny dashboards, backtesting trading strategies in the forward markets</li>
-</ul>
-<hr>
-<p><strong>Bergos Privatbank</strong> | Zürich, Switzerland<br>
-Internship – Active Advisory | Jul 2021 – Sep 2021</p>
-<ul>
-<li>Buy-side investment advisory for private clients across asset classes (Focus on Equities and Alternatives)</li>
-<li>Automation of monitoring tasks (e.g.&nbsp;automated downgrade alerts, gap analysis for missing data on funds)</li>
-</ul>
-<hr>
-<p><strong>PwC</strong> | Luxembourg<br>
-Internship – Regulatory &amp; Compliance Advisory Services | Apr 2019 – May 2019</p>
-<ul>
-<li>Optimisation of Excel models and creation of VBA applications for Anti-Money-Laundering screenings (web scraping, automated documentation)</li>
-</ul>
 </div>
-
-
-
-</section>
-
- <!-- /main -->
+<div class="metadata">
+<a href="./posts/20240918-Heuristics-Pumped-Storage/index.html" class="no-external">
+<div class="listing-date">
+Aug 9, 2025
+</div>
+<div class="listing-author">
+Mathias Steilen
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="1" data-categories="Machine Learning,R,Energy Economics" data-listing-date-sort="1678316400000" data-listing-file-modified-sort="1727177313822" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="38" data-listing-word-count-sort="7488">
+<div class="thumbnail">
+<p><a href="./posts/20230309-Swiss-Electricity-Demand-Forecasting/index.html" class="no-external"></a></p><a href="./posts/20230309-Swiss-Electricity-Demand-Forecasting/index.html" class="no-external">
+<p><img src="./posts/20230309-Swiss-Electricity-Demand-Forecasting/image.jpg" class="thumbnail-image"></p>
+</a><p><a href="./posts/20230309-Swiss-Electricity-Demand-Forecasting/index.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/20230309-Swiss-Electricity-Demand-Forecasting/index.html" class="no-external">Forecasting Swiss Electricity Demand</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./posts/20230309-Swiss-Electricity-Demand-Forecasting/index.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Machine Learning'); return false;">
+Machine Learning
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Energy Economics'); return false;">
+Energy Economics
+</div>
+</div>
+<div class="listing-description">
+<a href="./posts/20230309-Swiss-Electricity-Demand-Forecasting/index.html" class="no-external">The goal of this project is to test the ability of supervised machine learning models, namely elastic net, gradient boosting and random forest, to predict end-user electricity consumption in Switzerland.</a>
+</div>
+</div>
+<div class="metadata">
+<a href="./posts/20230309-Swiss-Electricity-Demand-Forecasting/index.html" class="no-external">
+<div class="listing-date">
+Mar 9, 2023
+</div>
+<div class="listing-author">
+Mathias Steilen
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="2" data-categories="Data Visualisation,R" data-listing-date-sort="1671058800000" data-listing-file-modified-sort="1726601828010" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="16" data-listing-word-count-sort="3133">
+<div class="thumbnail">
+<p><a href="./posts/20221215-Wasserkraft-Schweiz/index.html" class="no-external"></a></p><a href="./posts/20221215-Wasserkraft-Schweiz/index.html" class="no-external">
+<p><img src="./posts/20221215-Wasserkraft-Schweiz/image.jpg" class="thumbnail-image"></p>
+</a><p><a href="./posts/20221215-Wasserkraft-Schweiz/index.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/20221215-Wasserkraft-Schweiz/index.html" class="no-external">Schweizerische Wasserkraft</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./posts/20221215-Wasserkraft-Schweiz/index.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Data Visualisation'); return false;">
+Data Visualisation
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+</div>
+<div class="listing-description">
+<a href="./posts/20221215-Wasserkraft-Schweiz/index.html" class="no-external">Visualisierungen über die Standorte, Arten und Füllungsgrade der Wasserkraft in der Schweiz mit Daten des Bundesamts für Energie</a>
+</div>
+</div>
+<div class="metadata">
+<a href="./posts/20221215-Wasserkraft-Schweiz/index.html" class="no-external">
+<div class="listing-date">
+Dec 15, 2022
+</div>
+<div class="listing-author">
+Mathias Steilen
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="3" data-categories="Data Visualisation,R" data-listing-date-sort="1668380400000" data-listing-file-modified-sort="1698870765677" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="14" data-listing-word-count-sort="2698">
+<div class="thumbnail">
+<p><a href="./posts/20221114-CEDIES/index.html" class="no-external"></a></p><a href="./posts/20221114-CEDIES/index.html" class="no-external">
+<p><img src="./posts/20221114-CEDIES/image.jpg" class="thumbnail-image"></p>
+</a><p><a href="./posts/20221114-CEDIES/index.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/20221114-CEDIES/index.html" class="no-external">Luxembourgish Student Aid</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./posts/20221114-CEDIES/index.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Data Visualisation'); return false;">
+Data Visualisation
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+</div>
+<div class="listing-description">
+<a href="./posts/20221114-CEDIES/index.html" class="no-external">Analysing country level data of Luxembourgish financial aid for students, which gives insights into where students go, what they study and what subjects are prevalent by sex</a>
+</div>
+</div>
+<div class="metadata">
+<a href="./posts/20221114-CEDIES/index.html" class="no-external">
+<div class="listing-date">
+Nov 14, 2022
+</div>
+<div class="listing-author">
+Mathias Steilen
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="4" data-categories="Machine Learning,R,Optimisation" data-listing-date-sort="1666648800000" data-listing-file-modified-sort="1727119654591" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="41" data-listing-word-count-sort="8185">
+<div class="thumbnail">
+<p><a href="./posts/20221025-Customer-Churn-Classification/index.html" class="no-external"></a></p><a href="./posts/20221025-Customer-Churn-Classification/index.html" class="no-external">
+<p><img src="./posts/20221025-Customer-Churn-Classification/image.jpg" class="thumbnail-image"></p>
+</a><p><a href="./posts/20221025-Customer-Churn-Classification/index.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/20221025-Customer-Churn-Classification/index.html" class="no-external">Using Classification Models and Gain Curves For Profit Maximisation</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./posts/20221025-Customer-Churn-Classification/index.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Machine Learning'); return false;">
+Machine Learning
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Optimisation'); return false;">
+Optimisation
+</div>
+</div>
+<div class="listing-description">
+<a href="./posts/20221025-Customer-Churn-Classification/index.html" class="no-external">This post shows how customer churn classification models can be set up, trained and used to create financial value within organisations, specifically using gain curves and classification thresholds.</a>
+</div>
+</div>
+<div class="metadata">
+<a href="./posts/20221025-Customer-Churn-Classification/index.html" class="no-external">
+<div class="listing-date">
+Oct 25, 2022
+</div>
+<div class="listing-author">
+Mathias Steilen
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="5" data-categories="Machine Learning,R" data-listing-date-sort="1665093600000" data-listing-file-modified-sort="1698872737937" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="30" data-listing-word-count-sort="5844">
+<div class="thumbnail">
+<p><a href="./posts/20221007-Stacking-Models-Airbnb/index.html" class="no-external"></a></p><a href="./posts/20221007-Stacking-Models-Airbnb/index.html" class="no-external">
+<p><img src="./posts/20221007-Stacking-Models-Airbnb/image.jpg" class="thumbnail-image"></p>
+</a><p><a href="./posts/20221007-Stacking-Models-Airbnb/index.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/20221007-Stacking-Models-Airbnb/index.html" class="no-external">Stacking Models To Predict Airbnb Prices In Manhattan (NYC)</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./posts/20221007-Stacking-Models-Airbnb/index.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Machine Learning'); return false;">
+Machine Learning
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+</div>
+<div class="listing-description">
+<a href="./posts/20221007-Stacking-Models-Airbnb/index.html" class="no-external">The purpose of this post is to demonstrate the usefulness of the package <em>stacks</em> in blending individual machine learning models together into a linear combination of them (using LASSO regression), often increasing final model performance.</a>
+</div>
+</div>
+<div class="metadata">
+<a href="./posts/20221007-Stacking-Models-Airbnb/index.html" class="no-external">
+<div class="listing-date">
+Oct 7, 2022
+</div>
+<div class="listing-author">
+Mathias Steilen
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="6" data-categories="Machine Learning,Web Scraping,R" data-listing-date-sort="1663884000000" data-listing-file-modified-sort="1698922335054" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="23" data-listing-word-count-sort="4442">
+<div class="thumbnail">
+<p><a href="./posts/20220923-Shiny-Deployment-Used-Cars/index.html" class="no-external"></a></p><a href="./posts/20220923-Shiny-Deployment-Used-Cars/index.html" class="no-external">
+<p><img src="./posts/20220923-Shiny-Deployment-Used-Cars/image.jpg" class="thumbnail-image"></p>
+</a><p><a href="./posts/20220923-Shiny-Deployment-Used-Cars/index.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/20220923-Shiny-Deployment-Used-Cars/index.html" class="no-external">Deploying A Model Predicting Used Car Prices With Shiny</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./posts/20220923-Shiny-Deployment-Used-Cars/index.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Machine Learning'); return false;">
+Machine Learning
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Web Scraping'); return false;">
+Web Scraping
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+</div>
+<div class="listing-description">
+<a href="./posts/20220923-Shiny-Deployment-Used-Cars/index.html" class="no-external">The data for this post was scraped from a Swiss online platform. The goal of this post is to demonstrate a deployed model with <span>Shiny</span>, which allows users to enter information about their car and get back a prediction for the price in Swiss francs. A bonus is using tokenisation for extracting predictive information from the natural language title of each listing.</a>
+</div>
+</div>
+<div class="metadata">
+<a href="./posts/20220923-Shiny-Deployment-Used-Cars/index.html" class="no-external">
+<div class="listing-date">
+Sep 23, 2022
+</div>
+<div class="listing-author">
+Mathias Steilen
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="7" data-categories="Machine Learning,Web Scraping,Data Visualisation,R" data-listing-date-sort="1663538400000" data-listing-file-modified-sort="1727119535257" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="24" data-listing-word-count-sort="4654">
+<div class="thumbnail">
+<p><a href="./posts/20220919-Used-Motorcycles/index.html" class="no-external"></a></p><a href="./posts/20220919-Used-Motorcycles/index.html" class="no-external">
+<p><img src="./posts/20220919-Used-Motorcycles/image.jpg" class="thumbnail-image"></p>
+</a><p><a href="./posts/20220919-Used-Motorcycles/index.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/20220919-Used-Motorcycles/index.html" class="no-external">Scraping and Modelling Used Motorcycles</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./posts/20220919-Used-Motorcycles/index.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Machine Learning'); return false;">
+Machine Learning
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Web Scraping'); return false;">
+Web Scraping
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Data Visualisation'); return false;">
+Data Visualisation
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+</div>
+<div class="listing-description">
+<a href="./posts/20220919-Used-Motorcycles/index.html" class="no-external">This blog post is about how to create your own data sets by scraping websites with <em>rvest</em>. Specifically, I will scrape all available used motorcycles from a Swiss online platform, explore the data, make conclusions and train a model on the prices.</a>
+</div>
+</div>
+<div class="metadata">
+<a href="./posts/20220919-Used-Motorcycles/index.html" class="no-external">
+<div class="listing-date">
+Sep 19, 2022
+</div>
+<div class="listing-author">
+Mathias Steilen
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="8" data-categories="Simulation,R" data-listing-date-sort="1659996000000" data-listing-file-modified-sort="1698776864991" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="717">
+<div class="thumbnail">
+<p><a href="./posts/20220416-Birthday-Problem/index.html" class="no-external"></a></p><a href="./posts/20220416-Birthday-Problem/index.html" class="no-external">
+<p><img src="./posts/20220416-Birthday-Problem/image.jpg" class="thumbnail-image"></p>
+</a><p><a href="./posts/20220416-Birthday-Problem/index.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/20220416-Birthday-Problem/index.html" class="no-external">Birthday Problem</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./posts/20220416-Birthday-Problem/index.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Simulation'); return false;">
+Simulation
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+</div>
+<div class="listing-description">
+<a href="./posts/20220416-Birthday-Problem/index.html" class="no-external">The birthday problem is the surprising fact that in a group of just 23 people, there’s a 50-50 chance that two of them share the same birthday, which is way more likely than expected by most.</a>
+</div>
+</div>
+<div class="metadata">
+<a href="./posts/20220416-Birthday-Problem/index.html" class="no-external">
+<div class="listing-date">
+Aug 9, 2022
+</div>
+<div class="listing-author">
+Mathias Steilen
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="9" data-categories="Data Visualisation,Energy Economics,R" data-listing-date-sort="1659996000000" data-listing-file-modified-sort="1727119305229" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="16" data-listing-word-count-sort="3194">
+<div class="thumbnail">
+<p><a href="./posts/20220628-US-Wind/index.html" class="no-external"></a></p><a href="./posts/20220628-US-Wind/index.html" class="no-external">
+<p><img src="./posts/20220628-US-Wind/image.jpg" class="thumbnail-image"></p>
+</a><p><a href="./posts/20220628-US-Wind/index.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/20220628-US-Wind/index.html" class="no-external">US Wind Energy</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./posts/20220628-US-Wind/index.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Data Visualisation'); return false;">
+Data Visualisation
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Energy Economics'); return false;">
+Energy Economics
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+</div>
+<div class="listing-description">
+<a href="./posts/20220628-US-Wind/index.html" class="no-external">Visualising the wind turbine data base from USGS, which covers 71,666 wind turbines in the United States over a period from 1981 to 2022.</a>
+</div>
+</div>
+<div class="metadata">
+<a href="./posts/20220628-US-Wind/index.html" class="no-external">
+<div class="listing-date">
+Aug 9, 2022
+</div>
+<div class="listing-author">
+Mathias Steilen
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="10" data-categories="Data Visualisation,Energy Economics,R" data-listing-date-sort="1659996000000" data-listing-file-modified-sort="1727119464430" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1075">
+<div class="thumbnail">
+<p><a href="./posts/20220908-Swiss-End-User-Electricity-Consumption/index.html" class="no-external"></a></p><a href="./posts/20220908-Swiss-End-User-Electricity-Consumption/index.html" class="no-external">
+<p><img src="./posts/20220908-Swiss-End-User-Electricity-Consumption/image.jpg" class="thumbnail-image"></p>
+</a><p><a href="./posts/20220908-Swiss-End-User-Electricity-Consumption/index.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/20220908-Swiss-End-User-Electricity-Consumption/index.html" class="no-external">Swiss End-User Electricity Consumption</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./posts/20220908-Swiss-End-User-Electricity-Consumption/index.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Data Visualisation'); return false;">
+Data Visualisation
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Energy Economics'); return false;">
+Energy Economics
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+</div>
+<div class="listing-description">
+<a href="./posts/20220908-Swiss-End-User-Electricity-Consumption/index.html" class="no-external">Visualising Swiss End-User Electricity Consumption data provided by Swissgrid over the past decade</a>
+</div>
+</div>
+<div class="metadata">
+<a href="./posts/20220908-Swiss-End-User-Electricity-Consumption/index.html" class="no-external">
+<div class="listing-date">
+Aug 9, 2022
+</div>
+<div class="listing-author">
+Mathias Steilen
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="11" data-categories="Data Visualisation,R" data-listing-date-sort="1659045600000" data-listing-file-modified-sort="1727119428476" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1683">
+<div class="thumbnail">
+<p><a href="./posts/20220729-Fuel-Stations/index.html" class="no-external"></a></p><a href="./posts/20220729-Fuel-Stations/index.html" class="no-external">
+<p><img src="./posts/20220729-Fuel-Stations/image.jpg" class="thumbnail-image"></p>
+</a><p><a href="./posts/20220729-Fuel-Stations/index.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/20220729-Fuel-Stations/index.html" class="no-external">Alternative Fuel Stations in the US</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./posts/20220729-Fuel-Stations/index.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Data Visualisation'); return false;">
+Data Visualisation
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+</div>
+<div class="listing-description">
+<a href="./posts/20220729-Fuel-Stations/index.html" class="no-external">Visualising alternative fuelling stations in the US</a>
+</div>
+</div>
+<div class="metadata">
+<a href="./posts/20220729-Fuel-Stations/index.html" class="no-external">
+<div class="listing-date">
+Jul 29, 2022
+</div>
+<div class="listing-author">
+Mathias Steilen
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="12" data-categories="Probability,R" data-listing-date-sort="1657922400000" data-listing-file-modified-sort="1727119396139" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1048">
+<div class="thumbnail">
+<p><a href="./posts/20220716-StPetersburg-Dilemma/index.html" class="no-external"></a></p><a href="./posts/20220716-StPetersburg-Dilemma/index.html" class="no-external">
+<p><img src="./posts/20220716-StPetersburg-Dilemma/image.jpg" class="thumbnail-image"></p>
+</a><p><a href="./posts/20220716-StPetersburg-Dilemma/index.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/20220716-StPetersburg-Dilemma/index.html" class="no-external">The St.&nbsp;Petersburg Paradox</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./posts/20220716-StPetersburg-Dilemma/index.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Probability'); return false;">
+Probability
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+</div>
+<div class="listing-description">
+<a href="./posts/20220716-StPetersburg-Dilemma/index.html" class="no-external">The St.&nbsp;Petersburg paradox is a puzzling situation where a simple gambling game seems to promise a lot of money, but most people wouldn’t be willing to pay much to play it, even though the math suggests they should.</a>
+</div>
+</div>
+<div class="metadata">
+<a href="./posts/20220716-StPetersburg-Dilemma/index.html" class="no-external">
+<div class="listing-date">
+Jul 16, 2022
+</div>
+<div class="listing-author">
+Mathias Steilen
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="13" data-categories="Data Visualisation,Finance,R" data-listing-date-sort="1657231200000" data-listing-file-modified-sort="1727119383802" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1547">
+<div class="thumbnail">
+<p><a href="./posts/20220715-Mutual-Fund-Performance/index.html" class="no-external"></a></p><a href="./posts/20220715-Mutual-Fund-Performance/index.html" class="no-external">
+<p><img src="./posts/20220715-Mutual-Fund-Performance/image.jpg" class="thumbnail-image"></p>
+</a><p><a href="./posts/20220715-Mutual-Fund-Performance/index.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/20220715-Mutual-Fund-Performance/index.html" class="no-external">Do Known Mutual Fund Brands Outperform?</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./posts/20220715-Mutual-Fund-Performance/index.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Data Visualisation'); return false;">
+Data Visualisation
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Finance'); return false;">
+Finance
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+</div>
+<div class="listing-description">
+<a href="./posts/20220715-Mutual-Fund-Performance/index.html" class="no-external">Analysing if mutual funds from better known fund managers performed better as opposed to mutual funds from lesser known fund managers</a>
+</div>
+</div>
+<div class="metadata">
+<a href="./posts/20220715-Mutual-Fund-Performance/index.html" class="no-external">
+<div class="listing-date">
+Jul 8, 2022
+</div>
+<div class="listing-author">
+Mathias Steilen
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="14" data-categories="Machine Learning,Finance,R" data-listing-date-sort="1656540000000" data-listing-file-modified-sort="1727119364754" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="16" data-listing-word-count-sort="3072">
+<div class="thumbnail">
+<p><a href="./posts/20220630-Moving-Averages-Trading/index.html" class="no-external"></a></p><a href="./posts/20220630-Moving-Averages-Trading/index.html" class="no-external">
+<p><img src="./posts/20220630-Moving-Averages-Trading/image.jpg" class="thumbnail-image"></p>
+</a><p><a href="./posts/20220630-Moving-Averages-Trading/index.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/20220630-Moving-Averages-Trading/index.html" class="no-external">Do Moving Averages Convey Information About Stock Price Movements?</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./posts/20220630-Moving-Averages-Trading/index.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Machine Learning'); return false;">
+Machine Learning
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Finance'); return false;">
+Finance
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+</div>
+<div class="listing-description">
+<a href="./posts/20220630-Moving-Averages-Trading/index.html" class="no-external">There is plethora of day trading coaches claiming technical indicators like moving averages are useful for timing the market in stock trading. With this short post, I want to investigate whether supervised machine learning models like random forests are capable of extracting information from moving averages (technical indicator) about the future direction of a stock on a daily basis.</a>
+</div>
+</div>
+<div class="metadata">
+<a href="./posts/20220630-Moving-Averages-Trading/index.html" class="no-external">
+<div class="listing-date">
+Jun 30, 2022
+</div>
+<div class="listing-author">
+Mathias Steilen
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="15" data-categories="Machine Learning,Finance,R" data-listing-date-sort="1654207200000" data-listing-file-modified-sort="1727119259286" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="38" data-listing-word-count-sort="7500">
+<div class="thumbnail">
+<p><a href="./posts/20220603-Mutual-Fund-Selection/index.html" class="no-external"></a></p><a href="./posts/20220603-Mutual-Fund-Selection/index.html" class="no-external">
+<p><img src="./posts/20220603-Mutual-Fund-Selection/image.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/20220603-Mutual-Fund-Selection/index.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/20220603-Mutual-Fund-Selection/index.html" class="no-external">Application Of Machine Learning Methods To Mutual Fund Selection</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./posts/20220603-Mutual-Fund-Selection/index.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Machine Learning'); return false;">
+Machine Learning
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Finance'); return false;">
+Finance
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+</div>
+<div class="listing-description">
+<a href="./posts/20220603-Mutual-Fund-Selection/index.html" class="no-external">This is an executive summary of my bachelor’s thesis on machine learning in mutual fund selection. The main findings and implications with regard to practice are presented.</a>
+</div>
+</div>
+<div class="metadata">
+<a href="./posts/20220603-Mutual-Fund-Selection/index.html" class="no-external">
+<div class="listing-date">
+Jun 3, 2022
+</div>
+<div class="listing-author">
+Mathias Steilen
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="16" data-categories="Probability,Finance,R" data-listing-date-sort="1654120800000" data-listing-file-modified-sort="1727119215321" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="810">
+<div class="thumbnail">
+<p><a href="./posts/20220602-Portfolio-Checking/index.html" class="no-external"></a></p><a href="./posts/20220602-Portfolio-Checking/index.html" class="no-external">
+<p><img src="./posts/20220602-Portfolio-Checking/image.jpg" class="thumbnail-image"></p>
+</a><p><a href="./posts/20220602-Portfolio-Checking/index.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/20220602-Portfolio-Checking/index.html" class="no-external">How Often Should You Check Your Portfolio?</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./posts/20220602-Portfolio-Checking/index.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Probability'); return false;">
+Probability
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Finance'); return false;">
+Finance
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+</div>
+<div class="listing-description">
+<a href="./posts/20220602-Portfolio-Checking/index.html" class="no-external">Once you have invested in the stock market, it is hard not to check your portfolio every morning. But how often should you check it to maximise your mental health? The quick answer is: As infrequently as possible.</a>
+</div>
+</div>
+<div class="metadata">
+<a href="./posts/20220602-Portfolio-Checking/index.html" class="no-external">
+<div class="listing-date">
+Jun 2, 2022
+</div>
+<div class="listing-author">
+Mathias Steilen
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="17" data-categories="Probability,R" data-listing-date-sort="1653948000000" data-listing-file-modified-sort="1727119186741" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1187">
+<div class="thumbnail">
+<p><a href="./posts/20220531-Monty-Hall/index.html" class="no-external"></a></p><a href="./posts/20220531-Monty-Hall/index.html" class="no-external">
+<p><img src="./posts/20220531-Monty-Hall/image.jpg" class="thumbnail-image"></p>
+</a><p><a href="./posts/20220531-Monty-Hall/index.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/20220531-Monty-Hall/index.html" class="no-external">The Monty Hall Dilemma</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./posts/20220531-Monty-Hall/index.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Probability'); return false;">
+Probability
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+</div>
+<div class="listing-description">
+<a href="./posts/20220531-Monty-Hall/index.html" class="no-external">The Monty Hall problem is a brain-teasing scenario in which you’re asked to choose between three doors, with a hidden prize behind one of them, and switching your choice after one door is revealed can dramatically increase your chances of winning, which might sound counterintuitive at first.</a>
+</div>
+</div>
+<div class="metadata">
+<a href="./posts/20220531-Monty-Hall/index.html" class="no-external">
+<div class="listing-date">
+May 31, 2022
+</div>
+<div class="listing-author">
+Mathias Steilen
+</div>
+</a>
+</div>
+</div>
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -383,6 +1089,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   } else {
     toggleColorMode(false);
   }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
   const isCodeAnnotation = (el) => {
     for (const clz of el.classList) {
       if (clz.startsWith('code-annotation-')) {                     
@@ -765,7 +1478,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
- <!-- /content -->
+</div> <!-- /content -->
 
 
 
