@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   version="1.1"
+   id="svg2"
+   width="872.96002"
+   height="143.67999"
+   viewBox="0 0 872.96002 143.67999"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs6">
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath16">
+      <path
+         d="M 0,2.2888e-5 H 654.72 V 107.76002 H 0 Z"
+         clip-rule="evenodd"
+         id="path14" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath26">
+      <path
+         d="M -3.815e-6,5.3406e-5 H 654.72 V 107.76005 H -3.815e-6 Z"
+         clip-rule="evenodd"
+         id="path24" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath36">
+      <path
+         d="M 9.756e-6,0 H 654.72001 V 107.76 H 9.756e-6 Z"
+         clip-rule="evenodd"
+         id="path34" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath48">
+      <path
+         d="M 3e-8,2.2888e-5 H 654.72 V 107.76002 H 3e-8 Z"
+         clip-rule="evenodd"
+         id="path46" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath58">
+      <path
+         d="M 9.756e-6,0 H 654.72001 V 107.76 H 9.756e-6 Z"
+         clip-rule="evenodd"
+         id="path56" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath72">
+      <path
+         d="M 9.756e-6,0 H 654.72001 V 107.76 H 9.756e-6 Z"
+         clip-rule="evenodd"
+         id="path70" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath86">
+      <path
+         d="M 9.756e-6,0 H 654.72001 V 107.76 H 9.756e-6 Z"
+         clip-rule="evenodd"
+         id="path84" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath100">
+      <path
+         d="M 9.756e-6,0 H 654.72001 V 107.76 H 9.756e-6 Z"
+         clip-rule="evenodd"
+         id="path98" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath114">
+      <path
+         d="M 0,3.0518e-5 H 654.72 V 107.76003 H 0 Z"
+         clip-rule="evenodd"
+         id="path112" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath124">
+      <path
+         d="M 9.756e-6,0 H 654.72001 V 107.76 H 9.756e-6 Z"
+         clip-rule="evenodd"
+         id="path122" />
+    </clipPath>
+  </defs>
+  <g
+     id="g8"
+     transform="matrix(1.3333333,0,0,-1.3333333,0,143.68)">
+    <g
+       id="g10">
+      <g
+         id="g12"
+         clip-path="url(#clipPath16)">
+        <path
+           d="m 0,0.01001 h 654.75 v 107.75 H 0 Z"
+           style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none"
+           id="path18" />
+      </g>
+    </g>
+    <g
+       id="g20">
+      <g
+         id="g22"
+         clip-path="url(#clipPath26)">
+        <path
+           d="m 46.858,69.417 h 374.02 v 37.736 H 46.858 Z"
+           style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+           id="path28" />
+      </g>
+    </g>
+    <g
+       id="g30">
+      <g
+         id="g32"
+         clip-path="url(#clipPath36)">
+        <text
+           xml:space="preserve"
+           transform="matrix(1,0,0,-1,109.46,82.128)"
+           style="font-variant:normal;font-weight:normal;font-size:18px;font-family:'LM Roman 10';-inkscape-font-specification:LM;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="text40"><tspan
+             x="0 12.996 20.052 29.052 34.056 44.063999 49.068001 59.076 68.075996 74.07 83.07 93.005997 103.014 109.008 122.508 131.508 136.548 141.552 151.56 160.56 167.508 172.51199 181.51199 191.52 197.51401 209.772 217.76401 224.82001 229.896 238.896"
+             y="0"
+             id="tspan38">Training and Validation Period</tspan></text>
+      </g>
+    </g>
+    <g
+       id="g42">
+      <g
+         id="g44"
+         clip-path="url(#clipPath48)">
+        <path
+           d="M 0.37496,49.096 H 654.37"
+           style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+           id="path50" />
+      </g>
+    </g>
+    <g
+       id="g52">
+      <g
+         id="g54"
+         clip-path="url(#clipPath58)">
+        <text
+           xml:space="preserve"
+           transform="matrix(1,0,0,-1,571.37,8.856)"
+           style="font-variant:normal;font-weight:normal;font-size:15.984px;font-family:'LM Roman 10';-inkscape-font-specification:LM;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="text62"><tspan
+             x="0 8.0239677 16.047935 20.491488 28.483488 36.555408 40.998959 48.990959 57.062881 65.086845"
+             y="0"
+             id="tspan60">01.09.2024</tspan></text>
+      </g>
+    </g>
+    <path
+       d="M 607.89,49.096 V 31.846"
+       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       id="path64" />
+    <g
+       id="g66">
+      <g
+         id="g68"
+         clip-path="url(#clipPath72)">
+        <text
+           xml:space="preserve"
+           transform="matrix(1,0,0,-1,10.248,8.856)"
+           style="font-variant:normal;font-weight:normal;font-size:15.984px;font-family:'LM Roman 10';-inkscape-font-specification:LM;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="text76"><tspan
+             x="0 8.0239677 16.047935 20.491488 28.483488 36.555408 40.998959 48.990959 57.062881 65.086845"
+             y="0"
+             id="tspan74">01.09.2021</tspan></text>
+      </g>
+    </g>
+    <path
+       d="m 46.858,49.096 0.001,-17.25"
+       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       id="path78" />
+    <g
+       id="g80">
+      <g
+         id="g82"
+         clip-path="url(#clipPath86)">
+        <text
+           xml:space="preserve"
+           transform="matrix(1,0,0,-1,197.3,8.856)"
+           style="font-variant:normal;font-weight:normal;font-size:15.984px;font-family:'LM Roman 10';-inkscape-font-specification:LM;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="text90"><tspan
+             x="0 8.0239677 16.047935 20.491488 28.483488 36.555408 40.998959 48.990959 57.062881 65.086845"
+             y="0"
+             id="tspan88">01.09.2022</tspan></text>
+      </g>
+    </g>
+    <path
+       d="M 233.87,49.095 V 31.845"
+       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       id="path92" />
+    <g
+       id="g94">
+      <g
+         id="g96"
+         clip-path="url(#clipPath100)">
+        <text
+           xml:space="preserve"
+           transform="matrix(1,0,0,-1,384.34,8.448)"
+           style="font-variant:normal;font-weight:normal;font-size:15.984px;font-family:'LM Roman 10';-inkscape-font-specification:LM;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="text104"><tspan
+             x="0 8.0239677 16.047935 20.491488 28.483488 36.555408 40.998959 48.990959 57.062881 65.086845"
+             y="0"
+             id="tspan102">01.09.2023</tspan></text>
+      </g>
+    </g>
+    <path
+       d="M 420.88,48.686 V 31.436"
+       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       id="path106" />
+    <g
+       id="g108">
+      <g
+         id="g110"
+         clip-path="url(#clipPath114)">
+        <path
+           d="M 420.88,69.384 H 607.89 V 107.12 H 420.88 Z"
+           style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+           id="path116" />
+      </g>
+    </g>
+    <g
+       id="g118">
+      <g
+         id="g120"
+         clip-path="url(#clipPath124)">
+        <text
+           xml:space="preserve"
+           transform="matrix(1,0,0,-1,454.01,82.104)"
+           style="font-variant:normal;font-weight:normal;font-size:18.024px;font-family:'LM Roman 10';-inkscape-font-specification:LM;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="text128"><tspan
+             x="0 13.518 22.530001 27.576719 37.543991 46.555992 56.505241 63.516575 69.51857 81.702789 89.705444 96.770859 101.85362 110.86562"
+             y="0"
+             id="tspan126">Holdout Period</tspan></text>
+      </g>
+    </g>
+  </g>
+</svg>
